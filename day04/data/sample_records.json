@@ -1,0 +1,182 @@
+[
+  {
+    "guideline_no": 1,
+    "guideline_title": "Eat a variety of foods to ensure a balanced diet",
+    "key_advice": "Eat a mix of cereals/millets, pulses, vegetables, fruits, milk/eggs/flesh foods, nuts and oilseeds; use the My Plate for the Day as the guide.",
+    "number_limit": "",
+    "target_group": "All Indians",
+    "page_ref": "TBD",
+    "id": 1
+  },
+  {
+    "guideline_no": 2,
+    "guideline_title": "Ensure provision of extra food and healthcare to pregnant and lactating women",
+    "key_advice": "Pregnant and lactating women need extra energy, protein and micronutrients (iron, folate, calcium) and regular antenatal care.",
+    "number_limit": "",
+    "target_group": "Pregnant and lactating women",
+    "page_ref": "TBD",
+    "id": 2
+  },
+  {
+    "guideline_no": 3,
+    "guideline_title": "Ensure exclusive breastfeeding for the first six months and continue breastfeeding till two years and beyond",
+    "key_advice": "Give only breast milk for the first 6 months, then continue breastfeeding along with complementary foods.",
+    "number_limit": "6 months exclusive breastfeeding",
+    "target_group": "Infants and mothers",
+    "page_ref": "TBD",
+    "id": 3
+  },
+  {
+    "guideline_no": 4,
+    "guideline_title": "Start complementary feeding at completion of six months of age",
+    "key_advice": "Introduce safe, age-appropriate, energy-dense home foods at 6 months while continuing breastfeeding.",
+    "number_limit": "6 months",
+    "target_group": "Infants and young children",
+    "page_ref": "TBD",
+    "id": 4
+  },
+  {
+    "guideline_no": 5,
+    "guideline_title": "Ensure adequate and appropriate diets for children and adolescents, both in health and sickness",
+    "key_advice": "Children and teens need balanced meals, healthy snacks and extra care with feeding during illness.",
+    "number_limit": "",
+    "target_group": "Children and adolescents",
+    "page_ref": "TBD",
+    "id": 5
+  },
+  {
+    "guideline_no": 6,
+    "guideline_title": "Eat plenty of vegetables and fruits",
+    "key_advice": "Eat a variety of vegetables (including green leafy) and fruits every day, preferably seasonal and local.",
+    "number_limit": "",
+    "target_group": "All Indians",
+    "page_ref": "TBD",
+    "id": 6
+  },
+  {
+    "guideline_no": 7,
+    "guideline_title": "Ensure moderate use of edible oils and animal foods and the avoidance of ghee/vanaspati/trans fats",
+    "key_advice": "Use oils in moderation, vary the oils, limit visible fat, and avoid vanaspati and trans fats.",
+    "number_limit": "",
+    "target_group": "All adults",
+    "page_ref": "TBD",
+    "id": 7
+  },
+  {
+    "guideline_no": 8,
+    "guideline_title": "Avoid ultra-processed foods rich in fat, sugar and salt",
+    "key_advice": "Limit packaged snacks, sugary drinks, instant foods and bakery items high in fat, sugar and salt.",
+    "number_limit": "",
+    "target_group": "All Indians",
+    "page_ref": "TBD",
+    "id": 8
+  },
+  {
+    "guideline_no": 9,
+    "guideline_title": "Choose whole grains, millets and legumes for fibre and protein",
+    "key_advice": "Prefer whole grains, millets and pulses over refined cereals to improve fibre and protein quality.",
+    "number_limit": "",
+    "target_group": "All Indians",
+    "page_ref": "TBD",
+    "id": 9
+  },
+  {
+    "guideline_no": 10,
+    "guideline_title": "Use salt in moderation",
+    "key_advice": "Cut down on added salt, pickles, papad and processed foods to lower blood pressure risk.",
+    "number_limit": "Under 5 g salt per day (verify page)",
+    "target_group": "All adults",
+    "page_ref": "TBD",
+    "id": 10
+  },
+  {
+    "guideline_no": 11,
+    "guideline_title": "Limit sugar intake",
+    "key_advice": "Limit added sugar in tea, coffee, sweets and sweetened drinks.",
+    "number_limit": "20-25 g added sugar per day (per project brief; verify page)",
+    "target_group": "All adults",
+    "page_ref": "TBD",
+    "id": 11
+  },
+  {
+    "guideline_no": 12,
+    "guideline_title": "Drink adequate and safe water",
+    "key_advice": "Drink enough safe water through the day; more in hot weather and during physical activity.",
+    "number_limit": "",
+    "target_group": "All Indians",
+    "page_ref": "TBD",
+    "id": 12
+  },
+  {
+    "guideline_no": 13,
+    "guideline_title": "Adopt healthy cooking practices",
+    "key_advice": "Prefer steaming, boiling, pressure-cooking and roasting; avoid repeatedly reheated oil and charring.",
+    "number_limit": "",
+    "target_group": "All Indians",
+    "page_ref": "TBD",
+    "id": 13
+  },
+  {
+    "guideline_no": 14,
+    "guideline_title": "Be physically active and maintain a healthy body weight",
+    "key_advice": "Do regular physical activity and keep body weight in the healthy range.",
+    "number_limit": "",
+    "target_group": "All Indians",
+    "page_ref": "TBD",
+    "id": 14
+  },
+  {
+    "guideline_no": 15,
+    "guideline_title": "Ensure food safety and hygiene",
+    "key_advice": "Wash hands, store and cook food safely and avoid contaminated food and water.",
+    "number_limit": "",
+    "target_group": "All Indians",
+    "page_ref": "TBD",
+    "id": 15
+  },
+  {
+    "guideline_no": 16,
+    "guideline_title": "Be cautious about dietary supplements and protein powders",
+    "key_advice": "Most healthy people can meet protein needs from a balanced diet; supplements are not usually needed without medical advice.",
+    "number_limit": "",
+    "target_group": "Gym-goers, young adults",
+    "page_ref": "TBD",
+    "id": 16
+  },
+  {
+    "guideline_no": 17,
+    "guideline_title": "Read information on food labels to make informed and healthy food choices",
+    "key_advice": "Check ingredient list, nutrition information and claims before buying packaged foods.",
+    "number_limit": "",
+    "target_group": "All consumers",
+    "page_ref": "TBD",
+    "id": 17
+  },
+  {
+    "guideline_no": 17,
+    "guideline_title": "Food label: read the ingredient list",
+    "key_advice": "Ingredients are listed in descending order by weight; look for sugar, salt and fat names near the top.",
+    "number_limit": "",
+    "target_group": "All consumers",
+    "page_ref": "TBD",
+    "id": 18
+  },
+  {
+    "guideline_no": 17,
+    "guideline_title": "Food label: check nutrition information per serving",
+    "key_advice": "Compare sugar, salt (sodium) and fat per serving or per 100 g, and check the serving size.",
+    "number_limit": "",
+    "target_group": "All consumers",
+    "page_ref": "TBD",
+    "id": 19
+  },
+  {
+    "guideline_no": 17,
+    "guideline_title": "Food label: treat front-of-pack claims with caution",
+    "key_advice": "Claims such as 'natural', 'light' or 'immunity' do not mean a food is healthy; verify with the nutrition table.",
+    "number_limit": "",
+    "target_group": "All consumers",
+    "page_ref": "TBD",
+    "id": 20
+  }
+]

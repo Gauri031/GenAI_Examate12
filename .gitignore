@@ -1,0 +1,18 @@
+# virtual env + secrets (global, apply to all days)
+.venv/
+venv/
+.env
+
+# python
+__pycache__/
+*.pyc
+*.egg-info/
+
+# editors / OS
+.idea/
+.vscode/
+.DS_Store
+
+# downloaded raw files (re-create with: python -m app.fetch)
+**/data/raw/*.pdf
+**/data/raw/*.html
