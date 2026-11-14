@@ -7,3 +7,6 @@ pypdf
 pydantic
 python-dotenv
 httpx
+
+requests
+python-dotenv

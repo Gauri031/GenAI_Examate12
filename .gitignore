@@ -16,3 +16,5 @@ __pycache__/
 # downloaded raw files (re-create with: python -m app.fetch)
 **/data/raw/*.pdf
 **/data/raw/*.html
+
+.env
