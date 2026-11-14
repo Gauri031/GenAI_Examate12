@@ -1,0 +1,18 @@
+[
+  {"keywords": ["pregnant", "pregnancy", "trimester"],
+   "answer": "In pregnancy eat iron-rich foods (spinach, jaggery, lentils), calcium sources (milk, curd, ragi) and take iron-folic acid tablets as advised by your health worker."},
+  {"keywords": ["iron", "anaemia", "anemia"],
+   "answer": "Iron-rich foods: green leafy vegetables, jaggery, dates, lentils, ragi. Eat them with vitamin C foods like lemon or amla to absorb more iron."},
+  {"keywords": ["weaning", "6 months", "complementary"],
+   "answer": "From 6 months, start with soft foods like mashed dal-rice, khichdi or ragi porridge, alongside breastfeeding. Add one new food at a time."},
+  {"keywords": ["protein"],
+   "answer": "Good protein sources: dal, pulses, eggs, milk, curd, paneer, soybean, groundnuts. Combine cereals with pulses for better protein quality."},
+  {"keywords": ["vitamin a"],
+   "answer": "Vitamin A-rich foods: carrot, papaya, mango, pumpkin, drumstick leaves and spinach."},
+  {"keywords": ["lactose", "milk"],
+   "answer": "If a child cannot take milk, try curd or buttermilk (often better tolerated), ragi, sesame, and green leafy vegetables for calcium. Consult a doctor."},
+  {"keywords": ["malnutrition", "underweight", "stunting"],
+   "answer": "Signs of malnutrition in toddlers: low weight for age, thin arms, swelling of feet, tiredness, frequent infections. Visit the nearest Anganwadi or health centre."},
+  {"keywords": ["calorie", "roti"],
+   "answer": "One medium roti has roughly 70-100 kcal depending on size and oil/ghee used."}
+]
