@@ -10,7 +10,7 @@ from app.config import REQUEST_TIMEOUT
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 RAW = DATA / "raw"
-MANIFEST = DATA / "source_manifest.json"
+MANIFEST = RAW / "manifest.json"
 PDF_URL = "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI24thJune2024fin.pdf"
 ARCHIVED_PDF_URL = (
     "https://web.archive.org/web/20260311091911id_/"

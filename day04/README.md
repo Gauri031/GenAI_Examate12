@@ -17,7 +17,7 @@
 | `app/config.py` | Loads shared settings, including `REQUEST_TIMEOUT`. |
 | `app/__init__.py` | Makes `app` importable as a package. |
 | `data/records.json` | Generated 17-record result committed with the project. |
-| `data/source_manifest.json` | Committed download URLs, byte counts, timestamps, and SHA-256 hashes. |
+| `data/raw/manifest.json` | Committed download URLs, byte counts, timestamps, and SHA-256 hashes for the ignored raw downloads. |
 | `data/sample_records.json` | Sample fixture; it is not used as an automatic ingest fallback. |
 | `data/raw/` | Local source downloads; PDF and HTML files remain git-ignored. |
 | Root `requirements.txt`, `.gitignore`, `.env.example` | Shared dependencies, ignore rules, and settings template. |
@@ -39,6 +39,6 @@ python -m app.fetch
 python -m app.ingest
 ```
 
-`fetch.py` requires internet access and exits non-zero if any source cannot be retrieved. The original DGI PDF URL currently returns 404; the fetcher uses the pinned archived copy as a fallback. The generated `data/source_manifest.json` records which URL was actually used and lets you verify the ignored raw files by SHA-256.
+`fetch.py` requires internet access and exits non-zero if any source cannot be retrieved. The original DGI PDF URL currently returns 404; the fetcher uses the pinned archived copy as a fallback. The generated `data/raw/manifest.json` records which URL was actually used and lets you verify the ignored raw files by SHA-256.
 
 `ingest.py` requires the PDF in `data/raw/`. If it is missing, unreadable, or does not yield all 17 summaries, ingestion fails rather than creating a success-shaped sample output. `page_ref` is the 1-based PDF page number. Review `data/records.json` against the PDF before relying on its extracted health advice or numeric limits.

@@ -63,7 +63,7 @@ sanjivani-sj-31-poshanguide/
 `-- day04/
     |-- README.md
     |-- app/  (__init__.py, config.py, records.py, models.py, fetch.py, ingest.py)
-    `-- data/  (sample_records.json, records.json, source_manifest.json, raw/ for ignored downloads)
+    `-- data/  (sample_records.json, records.json, raw/ with manifest.json and ignored downloads)
 ```
 - **Global (repo root):** `.env`, `.env.example`, `.gitignore`, `requirements.txt`, `.venv`.
 - **Per day:** its own `README.md`, code and `data/`.
