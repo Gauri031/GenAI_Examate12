@@ -36,7 +36,7 @@
 | 1 | [`day01/`](day01/README.md) | Project card script (`day01_intro.py`) + while-loop menu (`day01_menu.py`) |
 | 2 | [`day02/`](day02/README.md) | 20 sample records (JSON); `app/records.py` + `app/cli.py` |
 | 3 | [`day03/`](day03/README.md) | FastAPI service, pandas `explore.py`, TF-IDF `smart_search.py` (tag `week-1`) |
-| 4 | [`day04/`](day04/README.md) | `fetch.py` downloads, `ingest.py` cleaning, `Record` dataclass |
+| 4 | [`day04/`](day04/README.md) | NIN document fetch, DGI PDF ingest to 17 records, typed `Record` dataclass, and source checksum manifest |
 
 ## Exact file locations
 ```
@@ -63,7 +63,7 @@ sanjivani-sj-31-poshanguide/
 `-- day04/
     |-- README.md
     |-- app/  (__init__.py, config.py, records.py, models.py, fetch.py, ingest.py)
-    `-- data/  (sample_records.json, records.json after ingest, raw/ for downloads)
+    `-- data/  (sample_records.json, records.json, source_manifest.json, raw/ for ignored downloads)
 ```
 - **Global (repo root):** `.env`, `.env.example`, `.gitignore`, `requirements.txt`, `.venv`.
 - **Per day:** its own `README.md`, code and `data/`.

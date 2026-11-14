@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-11-14T06:10:50.688188+00:00",
+  "documents": [
+    {
+      "file": "popular.html",
+      "source_url": "https://nin.res.in/popular.html",
+      "download_url": "https://nin.res.in/popular.html",
+      "bytes": 47541,
+      "sha256": "6054f9fb2a736f68b020ab38c0b34c083fe213a190d1ef4ef84a817179524af7"
+    },
+    {
+      "file": "DGI24thJune2024fin.pdf",
+      "source_url": "https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI24thJune2024fin.pdf",
+      "download_url": "https://web.archive.org/web/20260311091911id_/https://www.nin.res.in/dietaryguidelines/pdfjs/locale/DGI24thJune2024fin.pdf",
+      "bytes": 25431271,
+      "sha256": "38b430491a1c00826bf2cbe08985b8ab851fbe39e9626d4813e340243983b497"
+    },
+    {
+      "file": "nin_home.html",
+      "source_url": "https://www.nin.res.in/",
+      "download_url": "https://www.nin.res.in/",
+      "bytes": 84233,
+      "sha256": "2fe45676e186b4ea715b4ddee2ff1688bfefdd8f3587adb23cfa40519f8ef9b4"
+    }
+  ]
+}

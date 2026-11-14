@@ -1,5 +1,5 @@
 """Dataclass for a PoshanGuide record."""
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 
 
 @dataclass
@@ -12,5 +12,5 @@ class Record:
     page_ref: str = "TBD"
     id: int = 0
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return asdict(self)

@@ -3,7 +3,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
-DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "sample_records.json"
+DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "records.json"
+SAMPLE_DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "sample_records.json"
 
 
 def load_records(path=DATA_FILE):
