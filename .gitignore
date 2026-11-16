@@ -18,3 +18,5 @@ __pycache__/
 **/data/raw/*.html
 
 .env
+
+chroma_db/
