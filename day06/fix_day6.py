@@ -1,9 +1,8 @@
 from pathlib import Path
+import re
 import subprocess
 import sys
 
-# Retired Groq model and supported replacement
-OLD_MODEL = "llama-3.3-70b-versatile"
 NEW_MODEL = "openai/gpt-oss-120b"
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -15,9 +14,23 @@ EXTENSIONS = {
 
 def replace_model(path: Path) -> bool:
     content = path.read_text(encoding="utf-8")
-    if OLD_MODEL not in content:
+    if path.name == "llm.py":
+        updated, count = re.subn(
+            r'(?m)^(\s*"model":\s*os\.getenv\("GROQ_MODEL",\s*")[^"]+("),?$',
+            rf"\g<1>{NEW_MODEL}\g<2>",
+            content,
+        )
+    elif path.name in {".env", ".env.example"}:
+        updated, count = re.subn(
+            r"(?m)^(\s*GROQ_MODEL=)[^\r\n]*",
+            rf"\g<1>{NEW_MODEL}",
+            content,
+        )
+    else:
         return False
-    path.write_text(content.replace(OLD_MODEL, NEW_MODEL), encoding="utf-8")
+    if count == 0 or updated == content:
+        return False
+    path.write_text(updated, encoding="utf-8")
     return True
 
 
