@@ -6,11 +6,12 @@ Keys are read from environment variables - never hard-code them.
 import json
 import os
 import re
+from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 TIMEOUT = 40
 
@@ -23,11 +24,11 @@ def _groq(system_prompt: str, user_prompt: str, temperature: float) -> str:
     key = os.getenv("GROQ_API_KEY")
     if not key:
         raise LLMError("GROQ_API_KEY is missing. Add it to your .env file.")
-    resp = requests.post(
+    response = requests.post(
         "https://api.groq.com/openai/v1/chat/completions",
         headers={"Authorization": f"Bearer {key}"},
         json={
-            "model": os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+            "model": os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"),
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
@@ -37,9 +38,15 @@ def _groq(system_prompt: str, user_prompt: str, temperature: float) -> str:
         },
         timeout=TIMEOUT,
     )
-    if resp.status_code != 200:
-        raise LLMError(f"Groq error {resp.status_code}: {resp.text[:300]}")
-    return resp.json()["choices"][0]["message"]["content"]
+    if not response.ok:
+        raise LLMError(f"Groq error {response.status_code}: {response.text[:300]}")
+    try:
+        content = response.json()["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise LLMError("Groq returned an unexpected response.") from exc
+    if not isinstance(content, str) or not content.strip():
+        raise LLMError("Groq returned an empty response.")
+    return content
 
 
 def _gemini(system_prompt: str, user_prompt: str, temperature: float) -> str:
@@ -47,7 +54,7 @@ def _gemini(system_prompt: str, user_prompt: str, temperature: float) -> str:
     if not key:
         raise LLMError("GEMINI_API_KEY is missing. Add it to your .env file.")
     model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-    resp = requests.post(
+    response = requests.post(
         f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
         headers={"x-goog-api-key": key},
         json={
@@ -60,16 +67,16 @@ def _gemini(system_prompt: str, user_prompt: str, temperature: float) -> str:
         },
         timeout=TIMEOUT,
     )
-    if resp.status_code != 200:
-        raise LLMError(f"Gemini error {resp.status_code}: {resp.text[:300]}")
+    if not response.ok:
+        raise LLMError(f"Gemini error {response.status_code}: {response.text[:300]}")
     try:
-        return resp.json()["candidates"][0]["content"]["parts"][0]["text"]
-    except (KeyError, IndexError) as exc:
-        raise LLMError(f"Unexpected Gemini response: {resp.text[:300]}") from exc
+        return response.json()["candidates"][0]["content"]["parts"][0]["text"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise LLMError("Gemini returned an unexpected response.") from exc
 
 
 def call_llm(system_prompt: str, user_prompt: str, temperature: float = 0.2) -> str:
-    """Send a prompt to the chosen provider and return the raw text reply."""
+    """Send a prompt to the selected provider and return the raw text reply."""
     provider = os.getenv("LLM_PROVIDER", "groq").lower()
     try:
         if provider == "groq":
@@ -84,4 +91,18 @@ def call_llm(system_prompt: str, user_prompt: str, temperature: float = 0.2) -> 
 def parse_json(text: str) -> dict:
     """Turn the model's reply into a dict (strips ```json fences if present)."""
     cleaned = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
-    return json.loads(cleaned)
+    try:
+        value = json.loads(cleaned)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid JSON response: {exc.msg}") from exc
+    if not isinstance(value, dict):
+        raise ValueError("JSON response must be an object.")
+    return value
+
+
+def generate_response(prompt: str) -> str:
+    """Retain the original single-prompt Groq helper."""
+    try:
+        return _groq("", prompt, temperature=0.2)
+    except LLMError as exc:
+        return f"Groq error: {exc}"

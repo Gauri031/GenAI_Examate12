@@ -33,13 +33,24 @@ def run_prompt(question: str, version: str = "v2") -> dict:
     task = load_prompt(f"task_{version}.md").replace("{question}", question)
     data = parse_json(call_llm(system, task))
 
-    confidence = str(data.get("confidence", "low")).lower()
+    required = ("answer", "confidence", "follow_up")
+    missing = [field for field in required if field not in data]
+    if missing:
+        raise ValueError(f"Model response is missing required fields: {', '.join(missing)}")
+    if not all(isinstance(data[field], str) for field in required):
+        raise ValueError("Model response fields must all be strings.")
+
+    confidence = data["confidence"].lower()
     if confidence not in {"high", "medium", "low"}:
-        confidence = "low"
+        raise ValueError("Model confidence must be high, medium, or low.")
+    answer = data["answer"].strip()
+    follow_up = data["follow_up"].strip()
+    if not answer or not follow_up:
+        raise ValueError("Model answer and follow_up must not be empty.")
     return {
-        "answer": str(data.get("answer", "")).strip() or "Sorry, I could not produce an answer.",
+        "answer": answer,
         "confidence": confidence,
-        "follow_up": str(data.get("follow_up", "")).strip(),
+        "follow_up": follow_up,
     }
 
 
