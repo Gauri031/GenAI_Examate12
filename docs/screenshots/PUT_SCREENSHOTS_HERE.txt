@@ -1,0 +1,4 @@
+Save your real screenshots here (take them from the running app):
+  chat.png         chat answer with the Sources expander open and thumbs buttons visible
+  plate-check.png  "My plate check" view with the example meal loaded (colour bars visible)
+Delete this txt file afterwards.

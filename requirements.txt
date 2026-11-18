@@ -10,3 +10,6 @@ httpx
 
 requests
 python-dotenv
+
+streamlit
+requests
