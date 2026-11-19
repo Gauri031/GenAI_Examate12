@@ -267,10 +267,12 @@ Always run commands from inside `day08`, not from inside `app`.
 <!-- EVAL_TABLE_START -->
 | Config | Chunk size | Top-k | Chunks | Pass | Retrieval hit | Citation ok | Correct "I don't know" | False refusals | Avg sec/question |
 |--------|-----------|-------|--------|------|---------------|-------------|------------------------|----------------|------------------|
-| A | 400 | 3 | - | not run yet | - | - | - | - | - |
-| B | 700 | 5 | - | not run yet | - | - | - | - | - |
+| A **(winner)** | 400 | 3 | 20 | 14/15 (93%) | 12/12 | 12/12 | 3/3 | 0/12 | 2.4 |
+| B | 700 | 5 | 10 | 14/15 (93%) | 11/12 | 11/12 | 3/3 | 0/12 | 8.2 |
 
-Run `python eval/run_eval.py` inside the day08 folder. This table is then replaced with the real results and the winner.
+**Winner: Config A** (chunk size 400, top-k 3) with 14/15 questions passed.
+
+_Run on 2026-11-19._
 <!-- EVAL_TABLE_END -->
 
 ### My analysis (EDIT: write in your own words after running)
