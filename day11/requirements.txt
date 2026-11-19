@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+requests
+python-dotenv
+chromadb
+pypdf
+streamlit>=1.40
