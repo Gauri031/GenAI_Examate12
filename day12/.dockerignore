@@ -1,0 +1,24 @@
+# secrets and local files: never copy into the image
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+
+# generated or not needed to run the app
+chroma_db
+tests
+docs
+deploy
+README.md
+GIT_STEPS_day11.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+data/feedback.jsonl

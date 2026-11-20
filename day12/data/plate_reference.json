@@ -1,0 +1,70 @@
+{
+  "source": "ICMR-NIN Dietary Guidelines for Indians 2024 - 'My Plate for the Day' (2000 kcal adult)",
+  "kcal": 2000,
+  "note": "The older 2023 NIN poster showed 270 g cereals and 90 g pulses. Edit target_g below if you want those values.",
+  "groups": [
+    {
+      "key": "cereals",
+      "label": "Cereals & millets",
+      "target_g": 250,
+      "unit": "g (raw weight)",
+      "over_is_warning": true,
+      "examples": "roti, rice, bajra, jowar, ragi, poha, idli",
+      "ask": "Which millets and whole grains should I eat daily as part of a balanced diet?"
+    },
+    {
+      "key": "vegetables",
+      "label": "Vegetables (incl. green leafy, roots & tubers)",
+      "target_g": 400,
+      "unit": "g",
+      "over_is_warning": false,
+      "examples": "sabzi, palak, methi, salad, potato",
+      "ask": "How can I eat more vegetables and green leafy vegetables every day?"
+    },
+    {
+      "key": "fruits",
+      "label": "Fruits",
+      "target_g": 100,
+      "unit": "g",
+      "over_is_warning": false,
+      "examples": "banana, papaya, guava, orange",
+      "ask": "Which fruits are good to eat every day for a balanced diet?"
+    },
+    {
+      "key": "protein",
+      "label": "Pulses, eggs & flesh foods",
+      "target_g": 85,
+      "unit": "g (raw weight)",
+      "over_is_warning": false,
+      "examples": "dal, rajma, chole, sprouts, egg, fish, chicken",
+      "ask": "How can I get enough protein from dal, pulses and eggs every day?"
+    },
+    {
+      "key": "milk",
+      "label": "Milk & curd",
+      "target_g": 300,
+      "unit": "ml / g",
+      "over_is_warning": false,
+      "examples": "milk, curd, buttermilk, paneer",
+      "ask": "How much milk or curd should be part of my daily diet?"
+    },
+    {
+      "key": "nuts",
+      "label": "Nuts & seeds",
+      "target_g": 35,
+      "unit": "g",
+      "over_is_warning": true,
+      "examples": "groundnuts, almonds, sesame, flax seeds",
+      "ask": "Which nuts and seeds are good to add to my daily diet and how much?"
+    },
+    {
+      "key": "fats",
+      "label": "Fats & oils",
+      "target_g": 27,
+      "unit": "g",
+      "over_is_warning": true,
+      "examples": "oil, ghee, butter (include cooking oil)",
+      "ask": "How much oil and ghee is healthy to use in a day?"
+    }
+  ]
+}
