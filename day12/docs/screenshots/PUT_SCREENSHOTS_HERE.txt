@@ -1,0 +1,4 @@
+Save your real screenshots here, then delete this txt file:
+  ci-green.png      the GitHub Actions run (or PR checks) with all green ticks
+  live-health.png   your live URL /health open in the browser
+  live-docs.png     your live URL /docs open in the browser (optional)

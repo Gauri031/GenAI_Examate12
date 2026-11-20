@@ -1,0 +1,1213 @@
+[
+ {
+  "names": [
+   "roti",
+   "chapati",
+   "chapatti",
+   "chapathi",
+   "phulka",
+   "fulka"
+  ],
+  "unit": "1 roti (about 30 g flour)",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "names": [
+   "bhakri",
+   "jowar roti",
+   "bajra roti",
+   "ragi roti",
+   "millet roti",
+   "nachni roti"
+  ],
+  "unit": "1 roti (about 35 g millet flour)",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 35
+   }
+  ]
+ },
+ {
+  "names": [
+   "paratha",
+   "parantha"
+  ],
+  "unit": "1 plain paratha",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 40
+   },
+   {
+    "group": "fats",
+    "g": 4
+   }
+  ]
+ },
+ {
+  "names": [
+   "thepla"
+  ],
+  "unit": "1 thepla",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 30
+   },
+   {
+    "group": "fats",
+    "g": 4
+   }
+  ]
+ },
+ {
+  "names": [
+   "puri",
+   "poori"
+  ],
+  "unit": "1 puri",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 25
+   },
+   {
+    "group": "fats",
+    "g": 6
+   }
+  ]
+ },
+ {
+  "names": [
+   "rice",
+   "steamed rice",
+   "plain rice",
+   "bhat",
+   "chawal"
+  ],
+  "unit": "1 katori cooked (about 50 g raw)",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 50
+   }
+  ]
+ },
+ {
+  "names": [
+   "pulao",
+   "pulav",
+   "jeera rice",
+   "veg pulao",
+   "veg biryani"
+  ],
+  "unit": "1 katori",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 50
+   },
+   {
+    "group": "vegetables",
+    "g": 20
+   },
+   {
+    "group": "fats",
+    "g": 4
+   }
+  ]
+ },
+ {
+  "names": [
+   "biryani"
+  ],
+  "unit": "1 katori",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 55
+   },
+   {
+    "group": "protein",
+    "g": 15
+   },
+   {
+    "group": "fats",
+    "g": 6
+   }
+  ]
+ },
+ {
+  "names": [
+   "khichdi",
+   "khichri"
+  ],
+  "unit": "1 katori",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 35
+   },
+   {
+    "group": "protein",
+    "g": 15
+   },
+   {
+    "group": "fats",
+    "g": 3
+   }
+  ]
+ },
+ {
+  "names": [
+   "poha",
+   "pohe"
+  ],
+  "unit": "1 plate",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 40
+   },
+   {
+    "group": "nuts",
+    "g": 4
+   },
+   {
+    "group": "fats",
+    "g": 4
+   }
+  ]
+ },
+ {
+  "names": [
+   "upma",
+   "uppit"
+  ],
+  "unit": "1 plate",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 40
+   },
+   {
+    "group": "vegetables",
+    "g": 20
+   },
+   {
+    "group": "fats",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "names": [
+   "idli"
+  ],
+  "unit": "1 idli",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 20
+   },
+   {
+    "group": "protein",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "names": [
+   "dosa",
+   "plain dosa"
+  ],
+  "unit": "1 dosa",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 30
+   },
+   {
+    "group": "protein",
+    "g": 8
+   },
+   {
+    "group": "fats",
+    "g": 4
+   }
+  ]
+ },
+ {
+  "names": [
+   "masala dosa"
+  ],
+  "unit": "1 dosa",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 30
+   },
+   {
+    "group": "protein",
+    "g": 8
+   },
+   {
+    "group": "vegetables",
+    "g": 60
+   },
+   {
+    "group": "fats",
+    "g": 8
+   }
+  ]
+ },
+ {
+  "names": [
+   "bread",
+   "toast",
+   "bread slice",
+   "pav",
+   "bun"
+  ],
+  "unit": "1 slice or pav",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 28
+   }
+  ]
+ },
+ {
+  "names": [
+   "pav bhaji"
+  ],
+  "unit": "1 plate",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 56
+   },
+   {
+    "group": "vegetables",
+    "g": 120
+   },
+   {
+    "group": "fats",
+    "g": 12
+   }
+  ]
+ },
+ {
+  "names": [
+   "oats",
+   "oatmeal",
+   "porridge",
+   "daliya",
+   "dalia"
+  ],
+  "unit": "1 katori cooked",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "names": [
+   "noodles",
+   "maggi",
+   "pasta",
+   "macaroni"
+  ],
+  "unit": "1 plate",
+  "components": [
+   {
+    "group": "cereals",
+    "g": 50
+   },
+   {
+    "group": "fats",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "names": [
+   "chilla",
+   "cheela",
+   "besan chilla",
+   "moong chilla"
+  ],
+  "unit": "1 chilla",
+  "components": [
+   {
+    "group": "protein",
+    "g": 20
+   },
+   {
+    "group": "fats",
+    "g": 4
+   }
+  ]
+ },
+ {
+  "names": [
+   "sabzi",
+   "sabji",
+   "subzi",
+   "vegetable",
+   "vegetables",
+   "veg",
+   "bhaji",
+   "mixed veg",
+   "veg curry",
+   "vegetable curry",
+   "brinjal",
+   "baingan",
+   "eggplant",
+   "bhindi",
+   "lauki",
+   "gobi",
+   "cauliflower",
+   "tinda",
+   "karela",
+   "matar",
+   "peas",
+   "beans",
+   "capsicum",
+   "pumpkin",
+   "kaddu"
+  ],
+  "unit": "1 katori (about 100 g)",
+  "components": [
+   {
+    "group": "vegetables",
+    "g": 100
+   },
+   {
+    "group": "fats",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "names": [
+   "palak",
+   "spinach",
+   "methi",
+   "fenugreek",
+   "saag",
+   "sarson",
+   "chaulai",
+   "leafy vegetables",
+   "green leafy vegetables",
+   "leafy greens",
+   "green leafy"
+  ],
+  "unit": "1 katori cooked (about 100 g)",
+  "components": [
+   {
+    "group": "vegetables",
+    "g": 100
+   },
+   {
+    "group": "fats",
+    "g": 4
+   }
+  ]
+ },
+ {
+  "names": [
+   "salad",
+   "kachumber",
+   "cucumber",
+   "kheera",
+   "tomato",
+   "carrot",
+   "onion",
+   "radish",
+   "mooli",
+   "beetroot",
+   "raw vegetables"
+  ],
+  "unit": "1 bowl or 1 piece (about 80 g)",
+  "components": [
+   {
+    "group": "vegetables",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "names": [
+   "aloo",
+   "potato",
+   "sweet potato",
+   "shakarkandi",
+   "yam",
+   "arbi",
+   "suran",
+   "tuber"
+  ],
+  "unit": "1 medium (about 100 g)",
+  "components": [
+   {
+    "group": "vegetables",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "names": [
+   "banana",
+   "kela"
+  ],
+  "unit": "1 medium",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "names": [
+   "apple",
+   "seb"
+  ],
+  "unit": "1 medium",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "names": [
+   "orange",
+   "mosambi",
+   "sweet lime",
+   "kinnow",
+   "santra"
+  ],
+  "unit": "1 medium",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 130
+   }
+  ]
+ },
+ {
+  "names": [
+   "mango",
+   "aam"
+  ],
+  "unit": "1 medium",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "names": [
+   "papaya",
+   "papita"
+  ],
+  "unit": "1 katori (about 100 g)",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "names": [
+   "guava",
+   "amrood",
+   "peru"
+  ],
+  "unit": "1 medium",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "names": [
+   "grapes",
+   "angoor"
+  ],
+  "unit": "1 katori (about 80 g)",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "names": [
+   "watermelon",
+   "tarbooz",
+   "muskmelon",
+   "melon",
+   "kharbuja"
+  ],
+  "unit": "1 slice (about 150 g)",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "names": [
+   "pomegranate",
+   "anar"
+  ],
+  "unit": "1 katori (about 80 g)",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "names": [
+   "amla",
+   "gooseberry"
+  ],
+  "unit": "1 piece",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 40
+   }
+  ]
+ },
+ {
+  "names": [
+   "fruit",
+   "fruits",
+   "fruit salad",
+   "seasonal fruit",
+   "chikoo",
+   "sapota",
+   "pineapple",
+   "pear",
+   "plum",
+   "berries",
+   "jamun",
+   "litchi",
+   "ber"
+  ],
+  "unit": "1 serving (about 100 g)",
+  "components": [
+   {
+    "group": "fruits",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "names": [
+   "dal",
+   "daal",
+   "dhal",
+   "toor dal",
+   "tur dal",
+   "moong dal",
+   "masoor dal",
+   "urad dal",
+   "chana dal",
+   "dal tadka",
+   "dal fry"
+  ],
+  "unit": "1 katori cooked (about 30 g raw dal)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 30
+   },
+   {
+    "group": "fats",
+    "g": 3
+   }
+  ]
+ },
+ {
+  "names": [
+   "rajma",
+   "chole",
+   "chana",
+   "chickpeas",
+   "kidney beans",
+   "lobia",
+   "black eyed peas",
+   "moong",
+   "matki",
+   "moth",
+   "green gram",
+   "kulthi"
+  ],
+  "unit": "1 katori cooked (about 30 g raw)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 30
+   },
+   {
+    "group": "fats",
+    "g": 3
+   }
+  ]
+ },
+ {
+  "names": [
+   "sprouts",
+   "sprout",
+   "usal"
+  ],
+  "unit": "1 katori (about 35 g)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 35
+   }
+  ]
+ },
+ {
+  "names": [
+   "soya",
+   "soy chunks",
+   "soya chunks",
+   "nutrela",
+   "tofu"
+  ],
+  "unit": "1 katori cooked (about 20 g dry)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 20
+   },
+   {
+    "group": "fats",
+    "g": 3
+   }
+  ]
+ },
+ {
+  "names": [
+   "sambar",
+   "sambhar"
+  ],
+  "unit": "1 katori",
+  "components": [
+   {
+    "group": "protein",
+    "g": 20
+   },
+   {
+    "group": "vegetables",
+    "g": 60
+   },
+   {
+    "group": "fats",
+    "g": 2
+   }
+  ]
+ },
+ {
+  "names": [
+   "kadhi"
+  ],
+  "unit": "1 katori",
+  "components": [
+   {
+    "group": "protein",
+    "g": 10
+   },
+   {
+    "group": "milk",
+    "g": 60
+   },
+   {
+    "group": "fats",
+    "g": 4
+   }
+  ]
+ },
+ {
+  "names": [
+   "egg",
+   "anda",
+   "omelette",
+   "omelet",
+   "boiled egg",
+   "egg bhurji",
+   "egg curry"
+  ],
+  "unit": "1 egg (about 50 g)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 50
+   }
+  ]
+ },
+ {
+  "names": [
+   "chicken",
+   "murgh",
+   "chicken curry"
+  ],
+  "unit": "1 katori (about 80 g)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 80
+   },
+   {
+    "group": "fats",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "names": [
+   "fish",
+   "machli",
+   "fish curry",
+   "prawn",
+   "prawns",
+   "shrimp"
+  ],
+  "unit": "1 piece or katori (about 80 g)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 80
+   },
+   {
+    "group": "fats",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "names": [
+   "mutton",
+   "lamb",
+   "goat",
+   "meat",
+   "keema",
+   "beef",
+   "pork"
+  ],
+  "unit": "1 katori (about 70 g)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 70
+   },
+   {
+    "group": "fats",
+    "g": 6
+   }
+  ]
+ },
+ {
+  "names": [
+   "sattu"
+  ],
+  "unit": "1 glass drink (about 25 g)",
+  "components": [
+   {
+    "group": "protein",
+    "g": 25
+   }
+  ]
+ },
+ {
+  "names": [
+   "milk",
+   "doodh",
+   "hot milk",
+   "cold milk",
+   "glass of milk"
+  ],
+  "unit": "1 glass (200 ml)",
+  "components": [
+   {
+    "group": "milk",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "names": [
+   "tea",
+   "chai",
+   "masala chai",
+   "coffee"
+  ],
+  "unit": "1 cup (about 50 ml milk)",
+  "components": [
+   {
+    "group": "milk",
+    "g": 50
+   }
+  ]
+ },
+ {
+  "names": [
+   "curd",
+   "dahi",
+   "yogurt",
+   "yoghurt",
+   "raita"
+  ],
+  "unit": "1 katori (about 100 g)",
+  "components": [
+   {
+    "group": "milk",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "names": [
+   "buttermilk",
+   "chaas",
+   "chhaas",
+   "chach",
+   "mattha",
+   "lassi"
+  ],
+  "unit": "1 glass (about 100 ml milk)",
+  "components": [
+   {
+    "group": "milk",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "names": [
+   "paneer",
+   "cottage cheese",
+   "cheese"
+  ],
+  "unit": "1 serving (about 50 g, counted as ~100 ml milk)",
+  "components": [
+   {
+    "group": "milk",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "names": [
+   "almond",
+   "almonds",
+   "badam"
+  ],
+  "unit": "1 almond",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 1.2
+   }
+  ],
+  "unit_alias": {
+   "handful": 30
+  }
+ },
+ {
+  "names": [
+   "cashew",
+   "cashews",
+   "kaju"
+  ],
+  "unit": "1 cashew",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 1.8
+   }
+  ],
+  "unit_alias": {
+   "handful": 30
+  }
+ },
+ {
+  "names": [
+   "walnut",
+   "walnuts",
+   "akhrot"
+  ],
+  "unit": "1 walnut",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 5
+   }
+  ],
+  "unit_alias": {
+   "handful": 30
+  }
+ },
+ {
+  "names": [
+   "pista",
+   "pistachio",
+   "pistachios"
+  ],
+  "unit": "1 pistachio",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 0.7
+   }
+  ],
+  "unit_alias": {
+   "handful": 30
+  }
+ },
+ {
+  "names": [
+   "peanut",
+   "peanuts",
+   "groundnut",
+   "groundnuts",
+   "moongphali",
+   "mungfali"
+  ],
+  "unit": "1 peanut",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 0.7
+   }
+  ],
+  "unit_alias": {
+   "handful": 30
+  }
+ },
+ {
+  "names": [
+   "nuts",
+   "dry fruits",
+   "dry fruit",
+   "mixed nuts"
+  ],
+  "unit": "1 nut",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 1.5
+   }
+  ],
+  "unit_alias": {
+   "handful": 30
+  }
+ },
+ {
+  "names": [
+   "sesame",
+   "til",
+   "flax",
+   "flaxseed",
+   "flax seeds",
+   "alsi",
+   "chia",
+   "pumpkin seeds",
+   "sunflower seeds",
+   "seeds"
+  ],
+  "unit": "1 tsp (about 5 g)",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "names": [
+   "coconut",
+   "nariyal",
+   "dry coconut"
+  ],
+  "unit": "1 piece (about 15 g)",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 15
+   }
+  ]
+ },
+ {
+  "names": [
+   "makhana",
+   "fox nut",
+   "phool makhana"
+  ],
+  "unit": "1 handful (about 10 g)",
+  "components": [
+   {
+    "group": "nuts",
+    "g": 10
+   }
+  ]
+ },
+ {
+  "names": [
+   "ghee",
+   "clarified butter"
+  ],
+  "unit": "1 tsp (about 5 g)",
+  "components": [
+   {
+    "group": "fats",
+    "g": 5
+   }
+  ],
+  "unit_alias": {
+   "tbsp": 15,
+   "tablespoon": 15,
+   "tsp": 5,
+   "teaspoon": 5
+  }
+ },
+ {
+  "names": [
+   "oil",
+   "cooking oil",
+   "mustard oil",
+   "groundnut oil",
+   "coconut oil",
+   "sunflower oil",
+   "olive oil",
+   "refined oil",
+   "tadka",
+   "tarka"
+  ],
+  "unit": "1 tsp (about 5 g)",
+  "components": [
+   {
+    "group": "fats",
+    "g": 5
+   }
+  ],
+  "unit_alias": {
+   "tbsp": 15,
+   "tablespoon": 15,
+   "tsp": 5,
+   "teaspoon": 5
+  }
+ },
+ {
+  "names": [
+   "butter",
+   "makhan",
+   "white butter"
+  ],
+  "unit": "1 tsp (about 5 g)",
+  "components": [
+   {
+    "group": "fats",
+    "g": 5
+   }
+  ],
+  "unit_alias": {
+   "tbsp": 15,
+   "tablespoon": 15,
+   "tsp": 5,
+   "teaspoon": 5
+  }
+ },
+ {
+  "names": [
+   "sugar",
+   "sweets",
+   "sweet",
+   "mithai",
+   "gulab jamun",
+   "jalebi",
+   "laddu",
+   "ladoo",
+   "barfi",
+   "halwa",
+   "kheer",
+   "ice cream",
+   "chocolate",
+   "cake",
+   "pastry",
+   "biscuit",
+   "biscuits",
+   "cookie",
+   "cookies",
+   "chips",
+   "namkeen",
+   "bhujia",
+   "samosa",
+   "pakora",
+   "pakoda",
+   "kachori",
+   "vada pav",
+   "fries",
+   "french fries",
+   "burger",
+   "pizza",
+   "cold drink",
+   "soft drink",
+   "cola",
+   "soda",
+   "packaged juice",
+   "sweetened drink",
+   "fried snack"
+  ],
+  "unit": "1 serving",
+  "components": [
+   {
+    "group": "limit",
+    "g": 1
+   }
+  ]
+ },
+ {
+  "names": [
+   "water",
+   "green tea",
+   "black tea",
+   "black coffee",
+   "coconut water",
+   "lemon water",
+   "nimbu pani",
+   "salt",
+   "pickle",
+   "achar",
+   "papad",
+   "chutney"
+  ],
+  "unit": "-",
+  "components": []
+ }
+]

@@ -1,0 +1,44 @@
+name: poshanguide
+
+services:
+  api:
+    build: .
+    image: poshanguide:latest
+    container_name: poshanguide-api
+    # rebuild the search index from documents/ every start, then run the API
+    command: sh -c "python -m app.vectorstore && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/code/chroma_db
+      - ./documents:/code/documents
+      - ./data:/code/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    restart: unless-stopped
+
+  ui:
+    build: .
+    image: poshanguide:latest
+    container_name: poshanguide-ui
+    command: streamlit run ui/app.py --server.port 8501 --server.address 0.0.0.0
+    environment:
+      POSHAN_API_URL: http://api:8000
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/code/data
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  chroma_data:

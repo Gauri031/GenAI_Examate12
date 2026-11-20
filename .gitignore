@@ -35,3 +35,9 @@ chroma_db/
 __pycache__/
 .pytest_cache/
 .ruff_cache/
+
+.env
+chroma_db/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
