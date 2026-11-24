@@ -14,11 +14,13 @@ from pathlib import Path
 from fastapi import FastAPI
 
 from app.chat import router as chat_router
+from app.production import install  # added (Day 13)
 
 app = FastAPI(
     title="PoshanGuide",
     description="Nutrition guidance for families, answered from our own data and an LLM.",
 )
+install(app)  # added (Day 13): limits, injection guard, cache, latency/token log, GET /metrics
 app.include_router(chat_router)
 
 ROOT = Path(__file__).resolve().parent.parent

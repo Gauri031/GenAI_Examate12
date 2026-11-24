@@ -11,7 +11,6 @@ Endpoints
 
 Run from the day11 folder:  uvicorn app.main:app --reload
 """
-from app.production import install
 import json
 from pathlib import Path
 
@@ -19,13 +18,14 @@ from fastapi import FastAPI
 
 from app.ask import router as ask_router
 from app.chat import router as chat_router
+from app.production import install
 from app.search import router as search_router
 
 app = FastAPI(
-    install(app)
     title="PoshanGuide",
     description="Nutrition guidance for families: RAG answers with citations, LLM chat and semantic search.",
 )
+install(app)
 app.include_router(ask_router)
 app.include_router(chat_router)
 app.include_router(search_router)
