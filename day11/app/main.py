@@ -18,12 +18,14 @@ from fastapi import FastAPI
 
 from app.ask import router as ask_router
 from app.chat import router as chat_router
+from app.production import install
 from app.search import router as search_router
 
 app = FastAPI(
     title="PoshanGuide",
     description="Nutrition guidance for families: RAG answers with citations, LLM chat and semantic search.",
 )
+install(app)
 app.include_router(ask_router)
 app.include_router(chat_router)
 app.include_router(search_router)

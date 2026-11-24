@@ -1,126 +1,187 @@
-# Day 06 - PoshanGuide: LLM Provider Wrapper, /chat Endpoint and Prompt Comparison
+# 🥗 PoshanGuide
 
-## 1. The Task (as given)
+**A nutrition assistant for Indian families that answers from official guidelines, shows its sources, and says "I cannot answer" when it should.**
 
-> **S1:** `app/llm.py` provider wrapper (Groq/Gemini) + `POST /chat` with a PoshanGuide system prompt; `.env` NOT committed, `.env.example` committed.
-> **S2:** `prompts/` folder (system + 2 task prompts); `/chat` returns JSON (`answer`, `confidence`, `follow_up`); `eval/prompt_compare.md` compares 2 prompt versions on your 10 questions.
+> ▶️ **Demo video:** [PASTE YOUR VIDEO LINK HERE](PASTE_YOUR_VIDEO_LINK_HERE)
+> 💻 **Code:** https://github.com/Gauri031/GenAI_Examate12
 
-## 2. What the task includes
+---
 
-| # | Requirement | Deliverable | Location |
-|---|-------------|-------------|----------|
-| S1 | Provider wrapper for Groq / Gemini | `llm.py` | `app/` |
-| S1 | `POST /chat` endpoint | `chat.py`, connected in `main.py` | `app/` |
-| S1 | PoshanGuide system prompt | `system.md` | `prompts/` |
-| S1 | `.env` is NOT committed | `.env` listed in `.gitignore` | repo root |
-| S1 | `.env.example` IS committed | `.env.example` | `day06/` |
-| S2 | 3 prompt files (system + 2 task prompts) | `system.md`, `task_v1.md`, `task_v2.md` | `prompts/` |
-| S2 | `/chat` returns `answer`, `confidence`, `follow_up` | response model in `chat.py` | `app/` |
-| S2 | Compare 2 prompt versions on 10 questions | `prompt_compare.md` (made by `run_compare.py`) | `eval/` |
+## Table of contents
+1. [The problem](#the-problem)
+2. [What PoshanGuide does](#what-poshanguide-does)
+3. [Architecture](#architecture)
+4. [Results](#results)
+5. [Production notes](#production-notes)
+6. [Quick start](#quick-start)
+7. [API reference](#api-reference)
+8. [Prompts and prompt comparison](#prompts-and-prompt-comparison)
+9. [Agent and tools](#agent-and-tools)
+10. [Streamlit UI](#streamlit-ui)
+11. [Tests and benchmark](#tests-and-benchmark)
+12. [Environment variables and security](#environment-variables-and-security)
+13. [Repository layout](#repository-layout)
+14. [Build log (day by day)](#build-log-day-by-day)
+15. [Troubleshooting](#troubleshooting)
+16. [Safety](#safety)
 
-## 3. Folder structure (where every file is stored)
+---
+
+## The problem
+
+Families in India get nutrition advice from WhatsApp forwards, neighbours and random websites. Advice about a toddler's iron, a pregnant woman's diet or "how much sugar is too much" is often wrong, and the guidelines that are right (NIN, ICMR) are long PDFs that few people read.
+
+Generic chatbots make this worse: they sound confident, invent facts, never say where an answer came from and have no idea what a typical Indian plate looks like.
+
+## What PoshanGuide does
+
+| Feature | What the user gets |
+|---|---|
+| **Guideline-grounded answers** | Questions are answered from nutrition guideline documents (RAG) with **citations** under every answer |
+| **Honest confidence** | `/chat` answers carry `confidence` (high / medium / low) and a useful `follow_up` question. Things it cannot know, such as "which nutritionist near my village is free this week?", get an honest refusal |
+| **Switchable LLM** | One wrapper for Groq and Gemini. Change `LLM_PROVIDER` in `.env`, no code change |
+| **Agent with tools** | A LangGraph agent with memory searches the guidelines and runs a **daily sugar and salt counter**. The counter runs only after the user **approves** it |
+| **My plate check** | The user lists what they ate today and sees a colour bar per food group against the NIN "My Plate for the Day" proportions |
+| **Feedback loop** | 👍 / 👎 on every answer, saved to `data/feedback.jsonl` |
+| **Production layer** | Latency and token logging, response cache, input limits and a prompt-injection guard |
+
+## Architecture
+
+```mermaid
+flowchart LR
+    USER["Parent or health worker"] --> UI["Streamlit UI<br/>chat, citations, feedback, My plate check"]
+    UI -->|HTTP| PROD
+
+    subgraph API["FastAPI backend"]
+        PROD["Production layer<br/>input limits, injection guard,<br/>cache, latency and token log"]
+        PROD --> ASK["POST /ask"]
+        PROD --> CHAT["POST /chat"]
+        PROD --> AGENT["POST /agent"]
+
+        AGENT --> GRAPH["LangGraph agent<br/>memory and approval step"]
+        GRAPH --> RAG["RAG search"]
+        GRAPH --> TOOL["daily_sugar_salt_counter"]
+        ASK --> RAG
+    end
+
+    RAG --> DOCS[("Guideline data<br/>data/ folder")]
+    TOOL --> CSV[("data/sugar_salt.csv")]
+    RAG --> LLM
+    CHAT --> LLM["LLM wrapper<br/>Groq or Gemini"]
+    GRAPH --> LLM
+
+    PROD -.-> LOG[("logs/requests.jsonl")]
+    UI -.-> FB[("data/feedback.jsonl")]
+```
+
+**Request flow**
 
 ```
-sanjivani-sj-31-poshanguide/        <- repo root
-├── .gitignore                      <- contains the line  .env
-├── docs/                           <- Day 05 files
-├── day02/                          <- Day 02 files
-└── day06/
-    ├── README.md                   <- this file
-    ├── .env                        <- your real API key, LOCAL ONLY, never committed
-    ├── .env.example                <- template without secrets, committed
-    ├── app/
-    │   ├── __init__.py             <- empty file, makes app a package
-    │   ├── main.py                 <- FastAPI app, connects all endpoints
-    │   ├── llm.py                  <- Groq / Gemini provider wrapper
-    │   └── chat.py                 <- POST /chat endpoint
-    ├── prompts/
-    │   ├── system.md               <- PoshanGuide system prompt (rules and personality)
-    │   ├── task_v1.md              <- task prompt version 1 (simple)
-    │   └── task_v2.md              <- task prompt version 2 (structured)
-    ├── eval/
-    │   ├── questions.txt           <- the 10 test questions
-    │   ├── run_compare.py          <- runs v1 and v2 on all questions
-    │   └── prompt_compare.md       <- results table and my analysis
-    └── data/
-        └── nutrition.json          <- keyword data used by GET /ask (copied from day02)
+UI -> POST /chat {"question": "..."}
+  -> Production layer
+       body > 10,000 bytes                -> 413, stop
+       question > 500 characters          -> 422, stop
+       prompt-injection pattern           -> 400, stop (no LLM call, 0 tokens)
+       same question in cache             -> saved answer, X-Cache: HIT
+       otherwise                          -> call the endpoint, X-Cache: MISS
+  -> chat.py: load prompts/system.md + task prompt, call llm.py (Groq or Gemini)
+  -> parse JSON, clean it, return {answer, confidence, follow_up}
+  -> store in cache, write one line to logs/requests.jsonl (time, status, latency, tokens)
 ```
 
-## 4. Where to save each file
+## Results
 
-| File | Folder |
-|------|--------|
-| `README.md` | `day06/` |
-| `.env` | `day06/` (never push) |
-| `.env.example` | `day06/` |
-| `main.py`, `llm.py`, `chat.py`, `__init__.py` | `day06/app/` |
-| `system.md`, `task_v1.md`, `task_v2.md` | `day06/prompts/` |
-| `questions.txt`, `run_compare.py`, `prompt_compare.md` | `day06/eval/` |
-| `nutrition.json` | `day06/data/` |
+> Replace every `___` with your own numbers before you submit. The last column says where each number comes from.
 
-Important: file names must be exact. A downloaded file named `chat (1).py` or `questions (1).txt` must be renamed.
+| Measure | Result | Where it comes from |
+|---|---|---|
+| Evaluation questions | ___ | your eval set in `eval/` |
+| Answers judged correct / grounded | ___ % | `python eval/run_eval.py` |
+| Answers that carry a citation | ___ % | `python eval/run_eval.py` |
+| Out-of-scope questions correctly refused | ___ / ___ | `python eval/run_eval.py` |
+| Default prompt version and why | v2 (structured, 2-4 sentences, clear confidence rules) | `eval/prompt_compare.md` |
+| Median latency (uncached) | ___ ms | `python eval/bench_day13.py` |
+| p95 latency (uncached) | ___ ms | `python eval/bench_day13.py` |
+| Latency on a cache hit | ___ ms | `python eval/bench_day13.py` |
+| Average tokens per request | ___ | `python eval/bench_day13.py` |
+| Prompt-injection attempts blocked | ___ / ___ | `pytest test/test_day13.py` and the benchmark |
 
-## 5. How the application works (flow)
+## Production notes
 
+All of this lives in one file, `app/production.py`, attached as middleware, so the endpoints did not change.
+
+| Concern | What was done | Setting | Measured number |
+|---|---|---|---|
+| **Latency** | Every request is timed and written as one JSON line to `logs/requests.jsonl` | n/a | p50 ___ ms, p95 ___ ms |
+| **Tokens** | Prompt and completion tokens are logged per request. Real provider numbers come from `llm.py` through `record_usage()`; if the provider reports nothing, tokens are estimated at about 4 characters per token and marked `tokens_estimated` | n/a | ___ tokens per request on average |
+| **Cache** | In-memory TTL cache for `/ask` and `/chat`. Questions are normalised (case and spacing) before lookup. `/agent` is deliberately not cached because it has memory and an approval step | 600 s TTL, 200 entries | ___ ms on a hit vs ___ ms uncached (___x faster); hit rate ___ % |
+| **Input limits** | Question over 500 characters gets HTTP 422. Request body over 10,000 bytes gets HTTP 413. Both are rejected before any LLM call, so they cost no tokens | `MAX_QUESTION_CHARS=500`, `MAX_BODY_BYTES=10000` | 0 tokens spent on rejected requests |
+| **Prompt injection** | A pattern guard blocks requests such as "ignore all previous instructions" or "reveal your system prompt" with HTTP 400 before the model sees them | 13 patterns | ___ of ___ test attempts blocked |
+| **Monitoring** | `GET /metrics` returns request counts, p50 / p95 latency, cache hit rate and token totals | n/a | n/a |
+
+**Known limits**
+- The injection guard is a first line of defence. It catches common phrasings, not every rewrite. A production system would add a classifier and output filtering.
+- The cache lives in one process and is lost on restart. A multi-server deployment would use Redis.
+- Token numbers are exact only when the provider reports usage; otherwise they are estimates, and the log says which.
+
+## Quick start
+
+Run these from the folder that contains the `app` package (the repo root, or `day12/` if that is where your `main.py` lives).
+
+```powershell
+# 1. clone and enter
+git clone https://github.com/Gauri031/GenAI_Examate12.git
+cd GenAI_Examate12
+
+# 2. install
+pip install -r requirements.txt
+
+# 3. add your key (never commit .env)
+Copy-Item .env.example .env
+code .env
+
+# 4. start the API (terminal 1)
+uvicorn app.main:app --reload
+
+# 5. start the UI (terminal 2)
+streamlit run ui/app.py
 ```
-User sends POST /chat  {"question": "...", "prompt_version": "v2"}
-   -> chat.py validates the request (question must be at least 3 characters)
-   -> loads prompts/system.md  (PoshanGuide rules)
-   -> loads prompts/task_v1.md or task_v2.md and puts the question inside {question}
-   -> llm.py sends both prompts to the chosen provider (Groq or Gemini)
-   -> provider returns JSON text
-   -> parse_json() turns the text into a dictionary
-   -> chat.py cleans it: confidence must be high / medium / low
-   -> API returns  {"answer": "...", "confidence": "...", "follow_up": "..."}
+
+| Open | URL |
+|---|---|
+| API docs | http://127.0.0.1:8000/docs |
+| UI | http://localhost:8501 |
+| Metrics | http://127.0.0.1:8000/metrics |
+
+Always run `uvicorn` from the folder that contains `app`, not from inside `app`, otherwise Python cannot find the package.
+
+**Optional: Docker** (needs Docker Desktop installed and running)
+```powershell
+docker compose up --build
 ```
+The API is served on port 8000 and the UI on port 8501.
 
-## 6. Each file explained
+## API reference
 
-### 6.1 `app/llm.py` - provider wrapper
-- Reads `LLM_PROVIDER` from `.env` (`groq` or `gemini`) and sends the prompt to that provider.
-- `_groq()` calls the Groq chat completions API with JSON mode on.
-- `_gemini()` calls the Gemini `generateContent` API with the JSON response type.
-- `call_llm(system_prompt, user_prompt, temperature=0.2)` is the single function the rest of the app uses. Changing provider needs no code change, only the `.env` value.
-- `parse_json(text)` removes Markdown code fences if the model adds them, then converts the text to a dictionary.
-- `LLMError` is a custom error for a missing key, a network failure or a bad provider response.
-- Keys are only read from environment variables. They are never written in code.
+| Endpoint | Purpose |
+|---|---|
+| `GET /` | Welcome message |
+| `GET /health` | Health check |
+| `POST /chat` | LLM answer as JSON: `answer`, `confidence`, `follow_up` |
+| `POST /ask` (or `GET /ask?question=`) | Guideline-grounded answer with citations |
+| `POST /agent` | LangGraph agent. May return `awaiting_approval`; continue with `{"thread_id": "...", "approve": true}` |
+| `GET /metrics` | Latency, token and cache summary |
 
-### 6.2 `app/chat.py` - the /chat endpoint
-- `ChatRequest`: `question` (text, at least 3 characters) and `prompt_version` (`v1` or `v2`, default `v2`).
-- `ChatResponse`: `answer` (text), `confidence` (`high`, `medium` or `low`) and `follow_up` (text).
-- `run_prompt(question, version)` loads the system and task prompts, calls the LLM, parses the JSON and cleans the result. If the confidence value is invalid it is set to `low`. If the answer is empty a safe default message is returned.
-- `chat()` is the endpoint. A provider problem returns HTTP 502 with a clear message. Invalid JSON from the model also returns 502.
-- `run_prompt` is also reused by `eval/run_compare.py`, so the evaluation tests exactly what the API does.
+### `POST /chat`
 
-### 6.3 `app/main.py` - the app
-- Creates the FastAPI app and connects the chat router, so `POST /chat` is available.
-- Also keeps the earlier endpoints: `GET /`, `GET /health` and `GET /ask` (keyword answers from `data/nutrition.json`).
-
-### 6.4 `prompts/` - the three prompt files
-| File | Purpose |
-|------|---------|
-| `system.md` | Gives PoshanGuide its role and rules: friendly nutrition assistant for families in India, simple language, common Indian foods, general guidance only (no diagnosis or medicine doses), say "I cannot answer" when information is unreliable or live/local/personal, never invent facts, always reply in one JSON object. |
-| `task_v1.md` | Short, plain instruction: answer the question and reply in JSON with `answer`, `confidence`, `follow_up`. |
-| `task_v2.md` | Structured instruction: exact JSON shape, answer limited to 2-4 short sentences, clear rules for high / medium / low confidence, a useful follow-up question, and an instruction to say plainly when the question cannot be answered. |
-
-The placeholder `{question}` inside each task prompt is replaced with the user's question.
-
-### 6.5 `eval/` - prompt comparison
-- `questions.txt`: the 10 test questions, one per line.
-- `run_compare.py`: runs prompt v1 and v2 on every question and writes the results table into `prompt_compare.md`.
-- `prompt_compare.md`: the results table plus my own analysis.
-
-## 7. The /chat API
-
-### Request
+Request:
 ```json
 {
   "question": "Which foods are rich in iron for a 2-year-old?",
   "prompt_version": "v2"
 }
 ```
-
-### Response
+Response (real answers differ because they come from the model):
 ```json
 {
   "answer": "Give ragi porridge, dal, green leafy vegetables like palak, and eggs if the family eats them. Add a squeeze of lemon to help the body absorb iron.",
@@ -128,23 +189,110 @@ The placeholder `{question}` inside each task prompt is replaced with the user's
   "follow_up": "Does your child eat eggs or only vegetarian food?"
 }
 ```
-(Real answers will differ because they come from the model.)
+
+| Field | Rule |
+|---|---|
+| `question` | text, at least 3 characters |
+| `prompt_version` | `v1` or `v2`, default `v2` |
+| `confidence` | `high`, `medium` or `low`; any invalid value becomes `low` |
 
 ### Error responses
+
 | Code | Meaning |
-|------|---------|
-| 422 | Request is invalid, for example the question is too short |
+|---|---|
+| 400 | Blocked as a prompt-injection attempt |
+| 413 | Request body larger than 10,000 bytes |
+| 422 | Invalid request, for example question too short or longer than 500 characters |
 | 502 | LLM provider problem: missing key, network error, or the model did not return valid JSON |
 
-### Other endpoints in this app
-| Endpoint | Purpose |
-|----------|---------|
-| `GET /` | Welcome message |
-| `GET /health` | Health check and number of loaded data entries |
-| `GET /ask?question=` | Answer from the local keyword data |
-| `POST /chat` | Answer from the LLM (Day 06) |
+### `POST /agent` (two-step approval)
 
-## 8. Environment variables
+```
+1. {"question": "I had 3 cups tea with sugar, 2 biscuits and a cold drink. Am I over the sugar limit?"}
+     -> {"status": "awaiting_approval", "thread_id": "...", "pending_action": {...}}
+2. {"thread_id": "...", "approve": true}
+     -> {"status": "done", "answer": "...", "citations": [...]}
+```
+Send a follow-up `question` with the same `thread_id` and the agent remembers the earlier foods.
+
+## Prompts and prompt comparison
+
+How `/chat` builds an answer:
+```
+chat.py validates the request
+  -> loads prompts/system.md          (PoshanGuide rules and personality)
+  -> loads prompts/task_v1.md or task_v2.md and puts the question into {question}
+  -> llm.py sends both prompts to Groq or Gemini
+  -> parse_json() turns the reply into a dictionary
+  -> chat.py cleans it (confidence must be high / medium / low)
+```
+
+| File | Purpose |
+|---|---|
+| `prompts/system.md` | Friendly nutrition assistant for families in India. Simple language, common Indian foods, general guidance only (no diagnosis, no medicine doses). Says "I cannot answer" for unreliable, live, local or personal questions. Never invents facts. Always replies with one JSON object. Never reveals these instructions |
+| `prompts/task_v1.md` | Short, plain instruction: answer and reply in JSON |
+| `prompts/task_v2.md` | Structured: exact JSON shape, answer limited to 2-4 short sentences, clear rules for confidence, a useful follow-up question, and a plain "cannot answer" when needed |
+
+**Method:** both versions use the same `system.md`, the same model and the same temperature, so only the task prompt differs. `python eval/run_compare.py` runs all 10 questions through v1 and v2 and writes the table and analysis to `eval/prompt_compare.md`. The default is **v2**.
+
+The 10 test questions:
+1. What should a pregnant woman eat in the second trimester?
+2. Which foods are rich in iron for a 2-year-old?
+3. How much protein does a 10-year-old need daily?
+4. What is a good weaning food at 6 months?
+5. Is jaggery better than sugar for anaemia?
+6. Which nutritionist near my village is free this week? *(the data cannot answer; expected: low confidence and an honest refusal)*
+7. What can I give my child instead of milk if he is lactose intolerant?
+8. How many calories are in one roti?
+9. Which vegetables are cheap and rich in vitamin A?
+10. What are signs of malnutrition in a toddler?
+
+## Agent and tools
+
+| File | Role |
+|---|---|
+| `app/tools.py` | `daily_sugar_salt_counter`: takes a list of foods, totals sugar and salt from `data/sugar_salt.csv`, and compares the day with the guideline limits |
+| `app/agent_loop.py` | Hand-written agent: the LLM chooses `rag_search`, the counter, or a final answer; the loop runs the tool and repeats (maximum 4 steps) |
+| `app/graph.py` | The same agent rebuilt in LangGraph, with memory (`thread_id`) and one approval step before the counter runs |
+| `app/agent.py` | The `POST /agent` endpoint |
+
+## Streamlit UI
+
+`ui/app.py` is a chat UI that calls `/ask` or `/agent` (chosen in the sidebar).
+- Citations appear in an expander under each answer.
+- 👍 / 👎 votes are saved to `data/feedback.jsonl`.
+- **My plate check:** the user enters foods and grams, and each food group gets a colour bar compared with the NIN "My Plate for the Day" targets from `data/plate_reference.json`.
+
+| Colour | Meaning |
+|---|---|
+| 🔴 | under 50 % of the target |
+| 🟠 | 50 to 90 % |
+| 🟢 | 90 to 120 % |
+| 🟣 | over 120 % |
+
+Checkpoint 2 notes and screenshots are in `docs/checkpoint-2.md` and `docs/screenshots/` (git tag `checkpoint-2`).
+
+## Tests and benchmark
+
+```powershell
+pytest test/test_day13.py -v          # 7 tests, no API key needed
+python eval/bench_day13.py            # real latency, token and cache numbers
+python eval/summarize_logs.py         # summary of logs/requests.jsonl
+```
+
+| Test | Proves |
+|---|---|
+| `test_prompt_injection_is_blocked` | An injection attempt gets HTTP 400 and the LLM is never called |
+| `test_normal_question_passes` | Normal questions still work |
+| `test_question_too_long_is_rejected` | 501 characters gets 422 |
+| `test_body_too_large_is_rejected` | Oversize body gets 413 |
+| `test_cache_returns_second_answer_without_calling_llm` | Repeat question is `X-Cache: HIT`, LLM ran once |
+| `test_latency_and_tokens_are_logged` | The log holds latency and token counts |
+| `test_metrics_endpoint` | `/metrics` counts requests, hits and blocks |
+
+Before benchmarking: delete `logs/requests.jsonl` and restart the API so the cache is empty. The benchmark writes `docs/day13_numbers.md`.
+
+## Environment variables and security
 
 `.env.example` (committed, no secrets):
 ```
@@ -156,121 +304,80 @@ GEMINI_MODEL=gemini-2.5-flash
 ```
 
 | Variable | Meaning |
-|----------|---------|
+|---|---|
 | `LLM_PROVIDER` | `groq` or `gemini` |
 | `GROQ_API_KEY` | Free key from console.groq.com |
 | `GEMINI_API_KEY` | Free key from aistudio.google.com/apikey |
-| `GROQ_MODEL`, `GEMINI_MODEL` | Model names. If a model is retired, change the name here, no code change needed. |
+| `GROQ_MODEL`, `GEMINI_MODEL` | Model names. If a model is retired, change the name here, no code change needed |
 
-### Security rules
+Optional production settings (defaults shown): `MAX_QUESTION_CHARS=500`, `MAX_BODY_BYTES=10000`, `CACHE_TTL_SECONDS=600`, `CACHE_MAX_ENTRIES=200`, `REQUEST_LOG=logs/requests.jsonl`.
+
+**Security rules**
 - `.env` holds the real key and is **never committed**. It is listed in `.gitignore`.
 - `.env.example` is committed so others know which variables are needed.
+- `logs/` and `data/feedback.jsonl` are not committed because they contain user questions.
 - If a key is ever pushed or shared by mistake, delete it on the provider's website and create a new one.
 
-## 9. Setup and run (PowerShell, from the repo root)
+## Repository layout
 
-```powershell
-# 1. go into the folder
-cd day06
-
-# 2. install the packages
-pip install fastapi "uvicorn[standard]" requests python-dotenv
-
-# 3. create your .env from the template and paste your real key
-Copy-Item .env.example .env
-code .env
-
-# 4. start the app
-uvicorn app.main:app --reload
+```
+GenAI_Examate12/
+├── README.md                   <- this file
+├── .env.example                <- template without secrets (committed)
+├── .gitignore                  <- .env, logs/, data/feedback.jsonl
+├── requirements.txt
+├── app/
+│   ├── main.py                 <- FastAPI app, connects all endpoints, install(app)
+│   ├── llm.py                  <- Groq / Gemini provider wrapper
+│   ├── chat.py                 <- POST /chat
+│   ├── tools.py                <- daily_sugar_salt_counter
+│   ├── agent_loop.py           <- hand-written agent loop
+│   ├── graph.py                <- LangGraph agent (memory + approval)
+│   ├── agent.py                <- POST /agent
+│   └── production.py           <- limits, injection guard, cache, logging, /metrics
+├── prompts/                    <- system.md, task_v1.md, task_v2.md
+├── ui/                         <- app.py, plate.py, feedback.py
+├── data/                       <- guideline data, plate_reference.json, foods.json, sugar_salt.csv
+├── eval/                       <- questions, run_compare.py, prompt_compare.md, run_eval.py,
+│                                  bench_day13.py, summarize_logs.py
+├── test/                       <- test_day13.py
+├── docs/                       <- checkpoint-2.md, screenshots/, resume.md, day13_README.md
+├── logs/                       <- requests.jsonl (created at runtime, not committed)
+└── day01 ... day13/            <- daily task folders
 ```
 
-Open http://127.0.0.1:8000/docs, click `POST /chat`, then **Try it out** and send:
-```json
-{"question": "What is a good weaning food at 6 months?"}
-```
+## Build log (day by day)
 
-Always run `uvicorn` from inside `day06`, not from inside `app`, otherwise Python cannot find the `app` package.
+| Day | What was built |
+|---|---|
+| 02 | First FastAPI app with keyword answers: `GET /ask` over `data/nutrition.json` |
+| 06 | LLM provider wrapper (Groq / Gemini), `POST /chat` with JSON output, system prompt and two task prompts, prompt comparison on 10 questions |
+| 07-08 | RAG search over the guideline data with citations, evaluation script (`eval/run_eval.py`) |
+| 09 | Agent: sugar and salt tool, hand-written agent loop, LangGraph version with memory and approval, `POST /agent` |
+| 10 | Streamlit UI with citations, feedback and the "My plate check" (tag `checkpoint-2`) |
+| 13 | Production layer (latency and token logging, cache, input limits, injection guard), tests, benchmark, this README and `docs/resume.md` |
 
-## 10. Prompt comparison (S2 deliverable)
+More detail: [`docs/day13_README.md`](docs/day13_README.md) (Day 13) and [`docs/day06_README.md`](docs/day06_README.md) (Day 06).
 
-### Method
-1. Both prompts use the **same** `system.md`. Only the task prompt differs, so the comparison is fair.
-2. Run all 10 questions through **v1** and **v2** with the same model and temperature.
-3. Record answer, confidence and follow-up for each.
-
-### Run it
-```powershell
-cd day06
-python eval/run_compare.py
-```
-The script fills `eval/prompt_compare.md` with a table:
-
-| # | Question | v1 answer | v1 conf. | v2 answer | v2 conf. | v2 follow_up |
-|---|----------|-----------|----------|-----------|----------|--------------|
-
-### What to judge in the analysis
-- Which version gave clearer and shorter answers?
-- Did the confidence value make sense? Q6 (a question the data cannot answer, about a nutritionist near the village) should get **low** confidence and an honest "I cannot answer".
-- Were the follow-up questions useful?
-- Did either version break the JSON format?
-- Which version is used as the default in `/chat`, and why? (Default is **v2**.)
-
-The analysis section at the bottom of `prompt_compare.md` must be written in my own words.
-
-### The 10 questions
-1. What should a pregnant woman eat in the second trimester?
-2. Which foods are rich in iron for a 2-year-old?
-3. How much protein does a 10-year-old need daily?
-4. What is a good weaning food at 6 months?
-5. Is jaggery better than sugar for anaemia?
-6. Which nutritionist near my village is free this week? (data cannot answer)
-7. What can I give my child instead of milk if he is lactose intolerant?
-8. How many calories are in one roti?
-9. Which vegetables are cheap and rich in vitamin A?
-10. What are signs of malnutrition in a toddler?
-
-(Replace with my own 10 questions from Day 05 if they differ, in `eval/questions.txt`.)
-
-## 11. Git: commit and push
-
-Run from the **repo root** (`sanjivani-sj-31-poshanguide`):
-
-```powershell
-git check-ignore -v day06/.env
-git add -A day06
-git add -A .env.example
-git status
-git commit -m "Day 06: LLM wrapper, /chat endpoint, prompts, prompt comparison"
-git push origin main
-```
-
-Checks before committing:
-- `git check-ignore -v day06/.env` must print a line mentioning `.gitignore`. If it prints nothing, run `Add-Content .gitignore "`n.env"`.
-- In `git status`, `day06/.env` must **not** be listed.
-- `day06/.env.example` **must** be listed (committed).
-
-After pushing, open the repo on GitHub and check that `day06/` has `app`, `prompts`, `eval` and `.env.example`, and no `.env`.
-
-## 12. Troubleshooting
+## Troubleshooting
 
 | Problem | Fix |
-|---------|-----|
-| `No module named app` | Run `uvicorn` from the `day06` folder, not from inside `app` |
-| `No module named app.chat` | `chat.py` and `llm.py` are missing from `day06/app/` |
-| `GROQ_API_KEY is missing` | Create `.env` in `day06/` and paste the key; check `LLM_PROVIDER` |
-| 502 with a Groq/Gemini error | The key or model name is wrong; the message shows the provider's reason |
-| 502 "Model did not return valid JSON" | Run the request again; check that the prompt files were not edited by mistake |
-| `/health` shows `data_entries: 0` | `data/nutrition.json` is missing or in a different format |
-| File names like `questions (1).txt` | Rename them to the exact names in section 3 |
-| `.env` appears in `git status` | Do not commit. Add `.env` to `.gitignore` and check again |
+|---|---|
+| `No module named app` | Run `uvicorn` from the folder that contains `app`, not from inside it |
+| `No module named app.production` | `production.py` must be in the same `app` folder as `main.py`; check that `app/__init__.py` exists |
+| `GROQ_API_KEY is missing` | Create `.env` and paste the key; check `LLM_PROVIDER` |
+| 502 with a Groq / Gemini error | The key or model name is wrong; the message shows the provider's reason |
+| 502 "Model did not return valid JSON" | Run the request again; check the prompt files were not edited by mistake |
+| `/metrics` returns 404 | `install(app)` is missing in `main.py` |
+| Every token count shows `tokens_estimated: true` | `record_usage(...)` is not called in `llm.py` yet |
+| Cache never hits | `/agent` is never cached by design; for `/ask` and `/chat` the question must match after trimming spaces and lowercasing |
+| `docker` is not recognized | Install Docker Desktop, or run the app without Docker using the quick start |
+| `.env` appears in `git status` | Do not commit it. Add `.env` to `.gitignore` and check again |
 
-## 13. Final checklist
+## Safety
 
-- [ ] `app/llm.py` works with Groq or Gemini
-- [ ] `POST /chat` returns `answer`, `confidence`, `follow_up`
-- [ ] `prompts/` has `system.md`, `task_v1.md`, `task_v2.md`
-- [ ] `.env` is NOT committed
-- [ ] `.env.example` is committed
-- [ ] `eval/questions.txt` has my 10 questions
-- [ ] `eval/prompt_compare.md` generated and analysis written in my own words
-- [ ] Everything pushed to GitHub inside the `day06/` folder
+PoshanGuide gives general nutrition guidance only. It does not diagnose, prescribe or give medicine doses, and it tells the user to see a doctor or health worker for medical problems.
+
+---
+
+Author: [Gauri031](https://github.com/Gauri031)
